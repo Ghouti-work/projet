@@ -4,7 +4,18 @@ from kivy.uix.button import Button
 from kivy.uix.dropdown import DropDown
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager, Screen
-from FirstPage import *
+
+class FirstPage(BoxLayout):
+    def __init__(self, **kwargs):
+        super(FirstPage, self).__init__(**kwargs)
+        self.orientation = "vertical"
+        self.add_widget(Label(text="MediTalk", font_size=40, halign="center"))
+        welcome_button = Button(text="Welcome", size_hint=(0.5, 0.2), pos_hint={"center_x": 0.5, "center_y": 0.5})
+        welcome_button.bind(on_press=self.go_to_home)
+        self.add_widget(welcome_button)
+
+    def go_to_home(self, instance):
+        self.parent.current = "Home"
 
 class HomePage(BoxLayout):
     def __init__(self, **kwargs):
