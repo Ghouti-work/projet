@@ -1,126 +1,181 @@
-from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
-from kivy.uix.dropdown import DropDown
-from kivy.uix.label import Label
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivymd.app import MDApp
+from kivy.lang import Builder
+from kivy.uix.screenmanager import Screen, ScreenManager
+from kivy.uix.image import Image
 
-class FirstPage(BoxLayout):
-    def __init__(self, **kwargs):
-        super(FirstPage, self).__init__(**kwargs)
-        self.orientation = "vertical"
-        self.add_widget(Label(text="MediTalk", font_size=40, halign="center"))
-        welcome_button = Button(text="Welcome", size_hint=(0.5, 0.2), pos_hint={"center_x": 0.5, "center_y": 0.5})
-        welcome_button.bind(on_press=self.go_to_home)
-        self.add_widget(welcome_button)
 
-    def go_to_home(self, instance):
-        self.parent.current = "Home"
 
-class HomePage(BoxLayout):
-    def __init__(self, **kwargs):
-        super(HomePage, self).__init__(**kwargs)
-        self.orientation = "vertical"
-        self.add_widget(Label(text="MediTalk", font_size=20, halign="center"))
-        maladie_button = Button(text="Maladie", size_hint=(0.3, 0.1), pos_hint={"center_x": 0.3, "center_y": 0.3})
-        maladie_button.bind(on_press=self.go_to_maladie)
-        self.add_widget(maladie_button)
-        lang_bluetooth_button = Button(text="Langage & Bluetooth", size_hint=(0.3, 0.1), pos_hint={"center_x": 0.3, "center_y": 0.1})
-        lang_bluetooth_button.bind(on_press=self.go_to_lang_bluetooth)
-        self.add_widget(lang_bluetooth_button)
-        guide_button = Button(text="Guide", size_hint=(0.3, 0.1), pos_hint={"center_x": 0.3, "center_y": 0.1})
-        guide_button.bind(on_press=self.go_to_guide)
-        self.add_widget(guide_button)
-        important_button = Button(text="Important", size_hint=(0.3, 0.1), pos_hint={"center_x": 0.5, "center_y": 0.1})
-        important_button.bind(on_press=self.go_to_important)
-        self.add_widget(important_button)
+# Define the KV language string with improved formatting and error correction
+screen_helper = """
+ScreenManager:
+    FirstPage:
+    HomePage:
+    MaladiePage:
+    LangBluetoothPage:
+    GuidePage:
+    ImportantPage:
 
-    def go_to_maladie(self, instance):
-        self.parent.current = "Maladie"
+<FirstPage>:
 
-    def go_to_lang_bluetooth(self, instance):
-        self.parent.current = "Lang_Bluetooth"
+    name: 'FirstPage'
 
-    def go_to_guide(self, instance):
-        self.parent.current = "Guide"
+    AsyncImage:
+        source: "MediTalk3.png"
+        pos_hint: {'center_x': 0.5, 'center_y': 0.7}
+        size_hint : (0.6, 0.4)
 
-    def go_to_important(self, instance):
-        self.parent.current = "Important"
+    
 
-class MaladiePage(BoxLayout):
-    def __init__(self, **kwargs):
-        super(MaladiePage, self).__init__(**kwargs)
-        self.orientation = "vertical"
-        self.add_widget(Label(text="You need to turn bluetooth on", size_hint=(1, 0.2)))
-        dropdown = DropDown()
-        for choice in ["choice1", "choice2", "choice3", "choice4"]:
-            btn = Button(text=choice, size_hint_y=None, height=40)
-            btn.bind(on_release=lambda btnn: dropdown.select(btn.text))
-            dropdown.add_widget(btn)
-        dropdown_button = Button(text="Select", size=(0.3, 0.1), pos_hint={"center_x": 0.5, "center_y": 0.3})
-        dropdown_button.bind(on_release=dropdown.open)
-        self.add_widget(dropdown_button)
-        back_button = Button(text="Back", size_hint=(0.2, 0.1), pos_hint={"center_x": 0.5, "center_y": 0.3})
-        back_button.bind(on_press=self.go_to_home)
-        self.add_widget(back_button)
+    MDRectangleFlatButton:
+        text: 'Welcome'
+        text_color: 'white'
+        
+        pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+        on_press: root.manager.current = 'HomePage'
+        theme_text_color: 'Custom'
+        md_bg_color: 54/255, 79/255, 107/255, 5
+        line_color: 0,0,0,0
+        
+        
 
-    def go_to_home(self, instance):
-        self.parent.current = "Home"
 
-class LangBluetoothPage(BoxLayout):
-    def __init__(self, **kwargs):
-        super(LangBluetoothPage, self).__init__(**kwargs)
-        self.orientation = "vertical"
-        self.output_label = Label(text="The message will be displayed here", size_hint=(1, 0.8))
-        self.add_widget(self.output_label)
-        back_button = Button(text="Back", size_hint=(0.5, 0.1), pos_hint={"center_x": 0.5, "center_y": 0.1})
-        back_button.bind(on_press=self.go_to_home)
-        self.add_widget(back_button)
 
-    def go_to_home(self, instance):
-        self.parent.current = "Home"
+<HomePage>:
+    name: 'HomePage'
+    AsyncImage:
+        source: "MediTalk4.png"
+        pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+        size_hint : (0.6, 0.4)
 
-    def set_output_message(self, message):
-        self.output_label.text = message
+    MDRectangleFlatButton:
+        text: 'Maladie'
+        text_color: 'white'
+        pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+        on_press: root.manager.current = 'MaladiePage'
+        theme_text_color: 'Custom'
+        md_bg_color: 54/255, 79/255, 107/255, 5
+        line_color: 0,0,0,0
 
-class GuidePage(BoxLayout):
-    def __init__(self, **kwargs):
-        super(GuidePage, self).__init__(**kwargs)
-        self.orientation = "vertical"
-        self.add_widget(Label(text="Title1", font_size=20))
-        self.add_widget(Label(text="text for title1"))
-        self.add_widget(Label(text="Title2", font_size=20))
-        self.add_widget(Label(text="text for title 2"))
-        back_button = Button(text="Back", size_hint=(0.5, 0.1), pos_hint={"center_x": 0.5, "center_y": 0.1})
-        back_button.bind(on_press=self.go_to_home)
-        self.add_widget(back_button)
+    MDRectangleFlatButton:
+        text: 'Connection & Bluetooth'
+        text_color: 'white'
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        on_press: root.manager.current = 'LangBluetoothPage'
+        theme_text_color: 'Custom'
+        md_bg_color: 54/255, 79/255, 107/255, 5
+        line_color: 0,0,0,0
 
-    def go_to_home(self, instance):
-        self.parent.current = "Home"
+    MDRectangleFlatButton:
+        text: 'Guide'
+        text_color: 'white'
+        pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+        on_press: root.manager.current = 'GuidePage'
+        theme_text_color: 'Custom'
+        md_bg_color: 54/255, 79/255, 107/255, 5
+        line_color: 0,0,0,0
 
-class ImportantPage(BoxLayout):
-    def __init__(self, **kwargs):
-        super(ImportantPage, self).__init__(**kwargs)
-        self.orientation = "vertical"
-        self.add_widget(Label(text="Important information goes here", size_hint=(1, 0.8)))
-        back_button = Button(text="Back", size_hint=(0.5, 0.1), pos_hint={"center_x": 0.5, "center_y": 0.1})
-        back_button.bind(on_press=self.go_to_home)
-        self.add_widget(back_button)
+    MDRectangleFlatButton:
+        text: 'Important'
+        text_color: 'white'
+        pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+        on_press: root.manager.current = 'Important'     
+        theme_text_color: 'Custom'
+        md_bg_color: 54/255, 79/255, 107/255, 5     
+        line_color: 0,0,0,0   
 
-    def go_to_home(self, instance):
-        self.parent.current = "Home"
 
-class MediTalkApp(App):
+<MaladiePage>:
+    name: 'MaladiePage'
+    MDRectangleFlatButton:
+        text: 'Back'
+        text_color: 'white'
+        pos_hint: {'center_x': 0.2, 'center_y': 0.2}
+        on_press: root.manager.current = 'HomePage'  
+        theme_text_color: 'Custom'
+        md_bg_color: 54/255, 79/255, 107/255, 5    
+        line_color: 0,0,0,0
+
+
+<LangBluetoothPage>:
+    name: 'LangBluetoothPage'
+    MDRectangleFlatButton:
+        text: 'Back'
+        text_color: 'white'
+        pos_hint: {'center_x': 0.2, 'center_y': 0.2}
+        on_press: root.manager.current = 'HomePage'    
+        theme_text_color: 'Custom'
+        md_bg_color: 54/255, 79/255, 107/255, 5    
+        line_color: 0,0,0,0
+
+
+<GuidePage>:
+    name: 'GuidePage'
+    MDRectangleFlatButton:
+        text: 'Back'
+        text_color: 'white'
+        pos_hint: {'center_x': 0.2, 'center_y': 0.2}
+        on_press: root.manager.current = 'HomePage'  
+        theme_text_color: 'Custom'
+        md_bg_color: 54/255, 79/255, 107/255, 5    
+        line_color: 0,0,0,0
+
+
+<ImportantPage>:
+    name: 'Important'
+    MDRectangleFlatButton:
+        text: 'Back'
+        text_color: 'white'
+        pos_hint: {'center_x': 0.2, 'center_y': 0.2}
+        on_press: root.manager.current = 'HomePage'    
+        theme_text_color: 'Custom'
+        md_bg_color: 54/255, 79/255, 107/255, 5  
+        line_color: 0,0,0,0  
+
+
+"""
+
+
+# Class definitions remain the same
+class FirstPage(Screen):
+    pass
+
+
+class HomePage(Screen):
+    pass
+
+
+class MaladiePage(Screen):
+    pass
+
+
+class LangBluetoothPage(Screen):
+    pass
+
+
+class GuidePage(Screen):
+    pass
+
+
+class ImportantPage(Screen):
+    pass
+
+
+sm = ScreenManager()
+sm.add_widget(FirstPage(name='FirstPage'))
+sm.add_widget(FirstPage(name='HomePage'))
+sm.add_widget(FirstPage(name='MaladiePage'))
+sm.add_widget(FirstPage(name='LangBluetoothPage'))
+sm.add_widget(FirstPage(name='GuidePage'))
+sm.add_widget(FirstPage(name='ImportantPage'))
+
+
+class MediTalk(MDApp):
     def build(self):
-        self.icon="doctor.png"
-        screen_manager = ScreenManager()
-        screen_manager.add_widget(Screen(name="First"))
-        screen_manager.add_widget(Screen(name="Home"))
-        screen_manager.add_widget(Screen(name="Maladie"))
-        screen_manager.add_widget(Screen(name="Lang_Bluetooth"))
-        screen_manager.add_widget(Screen(name="Guide"))
-        screen_manager.add_widget(Screen(name="Important"))
-        return screen_manager
+        self.icon = "doctor.png"
+        # search how to compile to an python app to apk file
+        screen = Builder.load_string(screen_helper)
+        return screen
 
-if __name__ == "__main__":
-    MediTalkApp().run()
+
+if __name__ == '__main__':
+    MediTalk().run()
